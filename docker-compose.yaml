@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+    image: vladimirbodrin/test_work
+    ports:
+      - 80:8000
