@@ -1,9 +1,41 @@
 version: "3.9"
 
 services:
-  api:
-    build:
-      context: .
-    image: vladimirbodrin/test_work
+  db:
+    image: postgres:11-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: ${POSTGRES_HOST}
     ports:
-      - 80:8000
+      - '5432:5432'
+    volumes:
+      - work_test_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+      timeout: 3s
+      retries: 10
+      interval: 3s
+    networks:
+      - my_network
+
+  api:
+    build: .
+    image: vladimirbodrin/test_work:test33
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 8085:8085
+    networks:
+      - my_network
+
+volumes:
+  work_test_pg_data:
+
+networks:
+  my_network:
+    driver: bridge
