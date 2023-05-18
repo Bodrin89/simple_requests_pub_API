@@ -24,11 +24,15 @@ def get_questions():
     data = request.get_json()
     questions_num = data.get('questions_num', 0)
 
+    if questions_num < 0:
+        return "Число должно быть положительным"
+
+    if not isinstance(questions_num, int):
+        return jsonify({'error': 'Не правильный тип данных'}), 400
+
     # Запрос к публичному API для получения вопросов
     api_url = f"https://jservice.io/api/random?count={questions_num}"
     response = requests.get(api_url)
-    if not isinstance(questions_num, int):
-        return jsonify({'error': 'Не правильный тип данных'}), 400
     if response.status_code == 200:
         data = response.json()
         for item in data:
