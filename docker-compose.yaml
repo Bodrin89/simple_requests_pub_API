@@ -21,7 +21,6 @@ services:
       - my_network
 
   api:
-    build: .
     image: vladimirbodrin/test_work:test_work_1
     env_file:
       - .env
