@@ -4,5 +4,6 @@
 #expect
 !app.py
 !requirements.txt
-!entrypoint.sh
+!models.py
+!config.py
 !.env

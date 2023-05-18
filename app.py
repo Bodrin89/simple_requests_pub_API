@@ -1,38 +1,26 @@
-import os
 
 from flask import Flask, request, jsonify
 import requests
-from flask_sqlalchemy import SQLAlchemy
-from marshmallow import Schema, fields
+from config import Config, db
 from dotenv import load_dotenv, find_dotenv
-from flask_migrate import Migrate
+
+from models import Question, QuestionSchema
 
 app = Flask(__name__)
 
 load_dotenv(find_dotenv())
 
+app.config.from_object(Config)
+db.init_app(app)
 
-migrate = Migrate(app, db)
-
-
-class Question(db.Model):
-    __tablename__ = 'question'
-    id = db.Column(db.Integer, primary_key=True)
-    text_question = db.Column(db.String(255))
-    text_answer = db.Column(db.String(255))
-    data_question = db.Column(db.String(255))
-
-
-class QuestionSchema(Schema):
-    __tablename__ = 'question'
-    id = fields.Integer()
-    text_question = fields.String()
-    text_answer = fields.String()
-    data_question = fields.String()
+with app.app_context():
+    db.create_all()
 
 
 @app.route('/questions/', methods=['POST'])
 def get_questions():
+    """Получение вопросов"""
+
     data = request.get_json()
     questions_num = data.get('questions_num', 0)
 
@@ -71,4 +59,4 @@ def get_questions():
 
 
 if __name__ == '__main__':
-    app.run(port=8082)
+    app.run()
