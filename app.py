@@ -1,8 +1,9 @@
+import os
+
 from flask import Flask, request, jsonify
 import requests
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Schema, fields
-import os
 from dotenv import load_dotenv, find_dotenv
 from flask_migrate import Migrate
 
@@ -10,17 +11,7 @@ app = Flask(__name__)
 
 load_dotenv(find_dotenv())
 
-POSTGRES_USER = os.environ.get("POSTGRES_USER")
-POSTGRES_PASSWORD = os.environ.get("POSTGRES_PASSWORD")
-POSTGRES_HOST = os.environ.get("POSTGRES_HOST")
-POSTGRES_DB = os.environ.get("POSTGRES_DB")
-POSTGRES_PORT = os.environ.get("POSTGRES_PORT")
 
-app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql+psycopg2://{POSTGRES_USER}:" \
-                                        f"{POSTGRES_PASSWORD}@{POSTGRES_HOST}:" \
-                                        f"{POSTGRES_PORT}/{POSTGRES_DB}"
-
-db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 
