@@ -28,7 +28,7 @@ def get_questions():
         return jsonify({'error': 'Не правильный тип данных'}), 400
 
     if questions_num < 0:
-        return "Число должно быть положительным"
+        return jsonify({'error': 'Число должно быть положительным'}), 400
 
     # Запрос к публичному API для получения вопросов
     api_url = f"https://jservice.io/api/random?count={questions_num}"
