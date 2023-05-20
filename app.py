@@ -18,11 +18,11 @@ with app.app_context():
 
 
 @app.route('/questions/', methods=['POST'])
-def get_questions():
+def get_questions() -> jsonify:
     """Получение вопросов"""
 
     data = request.get_json()
-    questions_num = data.get('questions_num', 0)
+    questions_num: int = data.get('questions_num', 0)
 
     if not isinstance(questions_num, int):
         return jsonify({'error': 'Не правильный тип данных'}), 400
