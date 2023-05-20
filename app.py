@@ -31,10 +31,10 @@ def get_questions() -> jsonify:
         return jsonify({'error': 'Число должно быть положительным'}), 400
 
     # Запрос к публичному API для получения вопросов
-    api_url = f"https://jservice.io/api/random?count={questions_num}"
+    api_url: str = f"https://jservice.io/api/random?count={questions_num}"
     response = requests.get(api_url)
     if response.status_code == 200:
-        data = response.json()
+        data: dict = response.json()
         for item in data:
             # Проверка на уникальность вопроса в базе данных
             existing_question = Question.query.filter_by(text_question=item['question']).first()
